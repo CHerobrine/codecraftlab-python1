@@ -2,11 +2,13 @@ import pygame
 from pygame.locals import *
 import random
 class player(pygame.sprite.Sprite):
+    
     def __init__(self):
-        super(player,self).__init__()
-        self.surf=pygame.Surface((75,75))
-        self.surf.fill((255,0,0))
-        self.rect=self.surf.get_rect()
+        super(player, self).__init__()
+        self.image=pygame.image.load('jet.png').convert()
+        self.image.set_colorkey((255,255,255),RLEACCEL)
+        self.rect=self.image.get_rect()
+        
     def update(self,pressed_keys):
         if pressed_keys[K_UP]:
             self.rect.move_ip(0,-1)
@@ -27,15 +29,25 @@ class player(pygame.sprite.Sprite):
             self.rect.bottom=600
 
 class opponent(pygame.sprite.Sprite):
+    #def __init__(self):
+      #  super(opponent,self).__init__()
+       # self.surf=pygame.Surface((20,10))
+      # self.surf.fill((0,255,0))
+       # self.rect=self.surf.get_rect(center=(820,random.randint(0,600)))
+       # self.speed=random.randint(0,2)
     def __init__(self):
         super(opponent,self).__init__()
-        self.surf=pygame.Surface((20,10))
-        self.surf.fill((0,255,0))
-        self.rect=self.surf.get_rect(center=(820,random.randint(0,600)))
-        self.speed=random.randint(0,2)
-
+        self.image=pygame.image.load('bird.gif')
+        self.image.set_colorkey((255,255,255),RLEACCEL)
+        self.rect=self.image.get_rect(
+            center=(random.randint(820,900),random.randint(0,600))
+            )
+        
+        
+        self.speed=random.randint(0,1)
     def update(self):
         self.rect.move_ip(-self.speed,0)
+        
         if self.rect.right<0:
             self.kill()
         
@@ -49,7 +61,7 @@ pygame.init()
 screen=pygame.display.set_mode((800,600))
 player = player()
 background=pygame.Surface(screen.get_size())
-background.fill((0,0,0))
+background.fill((0,122,224))
 
 players=pygame.sprite.Group
 opponents=pygame.sprite.Group()
@@ -61,7 +73,10 @@ pygame.time.set_timer(ADDOPPONENT,250)
 #surf.fill((200,0,1))
 #rect=surf.get_rect()
 running = True
+clock=pygame.time.Clock()
+fps=1000
 while running:
+    clock.tick(fps)
     for event in pygame.event.get():
         if event.type == KEYDOWN:
             if event.key == K_ESCAPE:
@@ -79,10 +94,10 @@ while running:
     #screen.blit(surf,(400,250))
     #screen.blit(player.surf,(400,250))
     #screen.blit(player.surf,player.rect)
-    for entity in all_sprites:
-     
-         screen.blit(entity.surf, entity.rect)
-    
+    for entity in all_sprites: 
+         screen.blit(entity.image, entity.rect)
+    if pygame.sprite.spritecollideany(player,opponents):
+        player.kill()
     pygame.display.flip()
 
 
