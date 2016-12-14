@@ -52,6 +52,26 @@ class opponent(pygame.sprite.Sprite):
         self.rect.move_ip(-self.speed,0)
         if self.rect.right<0:
             self.kill()
+class FIRE(pygame.sprite.Sprite):
+    #def __init__(self):
+      #  super(opponent,self).__init__()
+       # self.surf=pygame.Surface((20,10))
+      # self.surf.fill((0,255,0))
+       # self.rect=self.surf.get_rect(center=(820,random.randint(0,600)))
+       # self.speed=random.randint(0,2)
+    def __init__(self):
+        super(opponent,self).__init__()
+        self.image=pygame.image.load('FIRE.png')
+        self.image.set_colorkey((255,255,255),RLEACCEL)
+        self.rect=self.image.get_rect(
+            center=(random.randint(850,900),random.randint(0,600))
+            )
+        self.speed = random.randint(0,1)
+    def update(self):
+        self.rect.move_ip(-self.speed,0)
+        if self.rect.right<0:
+            self.kill()
+            
 
 class Cloud(pygame.sprite.Sprite):
     def __init__(self,color):
@@ -101,6 +121,7 @@ background.fill((0,122,224))
 
 players=pygame.sprite.Group
 opponents=pygame.sprite.Group()
+FIRE=pygame.sprite.Group()
 all_sprites=pygame.sprite.Group()
 all_sprites.add(player)
 ADDOPPONENT=pygame.USEREVENT+1
