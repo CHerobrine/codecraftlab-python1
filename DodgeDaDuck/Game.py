@@ -2,11 +2,14 @@
 import pygame
 from pygame.locals import *
 import random
+import time
+import sys
+from stem_airplane import*
 class player(pygame.sprite.Sprite):
     
     def __init__(self):
         super(player, self).__init__()
-        self.image=pygame.image.load('jet.png').convert()
+        self.image=pygame.image.load('biplane.png').convert()
         self.image.set_colorkey((255,255,255),RLEACCEL)
         self.rect=self.image.get_rect()
         
@@ -29,6 +32,7 @@ class player(pygame.sprite.Sprite):
         elif self.rect.bottom>=600:
             self.rect.bottom=600
 
+
 class opponent(pygame.sprite.Sprite):
     #def __init__(self):
       #  super(opponent,self).__init__()
@@ -38,16 +42,17 @@ class opponent(pygame.sprite.Sprite):
        # self.speed=random.randint(0,2)
     def __init__(self):
         super(opponent,self).__init__()
-        self.image=pygame.image.load('bird.gif')
+        self.image=pygame.image.load('Duck.jpg')
         self.image.set_colorkey((255,255,255),RLEACCEL)
         self.rect=self.image.get_rect(
-            center=(random.randint(820,900),random.randint(0,600))
+            center=(random.randint(850,900),random.randint(0,600))
             )
- def update(self):
+        self.speed = random.randint(0,1)
+    def update(self):
         self.rect.move_ip(-self.speed,0)
-        
         if self.rect.right<0:
             self.kill()
+
 class Cloud(pygame.sprite.Sprite):
     def __init__(self,color):
         super(Cloud.self). __init__()
@@ -66,7 +71,7 @@ class Cloud(pygame.sprite.Sprite):
             
 class Rain(pygame.sprite.Sprite):
     def __init__(self):
-        super(Rain,self.__init__()
+        super(Rain,self).__init__()
         self.image=pygame.image.load('raindrop.png').convert()
         self.image.set_colorkey((0,0,0),RLEACCEL)
         self.rect=self.iamge.get_rect(
@@ -76,20 +81,15 @@ class Rain(pygame.sprite.Sprite):
     
     def update(self):
         self.rect.move_ip(-self.speed,0)
-        if self.rect.bottom<0:
+        if self.rect.bottom<900:
             self.kill()
     
-            
-        self.speed=random.randint(0,1)
-    def update(self):
-        self.rect.move_ip(-self.speed,0)
-        
-        if self.rect.right<0:
-            self.kill()
-        
-        
+        #create level function
+def set_level(level):
+    caption = 'Airplane - ' + ' Level ' + str(level)
+    pygame.display.set_caption(caption)
 
-        
+
 
         
 
