@@ -1,4 +1,4 @@
-
+#libraries
 import pygame
 from pygame.locals import *
 import random
@@ -7,10 +7,10 @@ import sys
 from random import randint
 from stem_airplane import*
 print('loading files')
-print('loading complete starting game')
+print('loading complete - starting game')
 
 
-
+#player class
 class player(pygame.sprite.Sprite):
 
     def __init__(self):
@@ -19,7 +19,7 @@ class player(pygame.sprite.Sprite):
         self.image.set_colorkey((255,255,255),RLEACCEL)
         self.rect=self.image.get_rect()
     
-        
+#controlls      
     def update(self,pressed_keys):
         if pressed_keys[K_UP]:
             self.rect.move_ip(0,-1)
@@ -38,9 +38,8 @@ class player(pygame.sprite.Sprite):
             self.rect.top=0
         elif self.rect.bottom>=600:
             self.rect.bottom=600
-        if pressed_keys[K_SHIFT]:
-            player.kill
 
+#the evil ducks
 class opponent(pygame.sprite.Sprite):
     #def __init__(self):
       #  super(opponent,self).__init__()
@@ -61,6 +60,9 @@ class opponent(pygame.sprite.Sprite):
         self.rect.move_ip(-self.speed,0)
         if self.rect.right<0:
             self.kill()
+    # the meteor
+
+
 class meteor(pygame.sprite.Sprite):
     #def __init__(self):
       #  super(opponent,self).__init__()
@@ -82,51 +84,19 @@ class meteor(pygame.sprite.Sprite):
             self.kill()
                         
 
-class Cloud(pygame.sprite.Sprite):
-    def __init__(self,color):
-        super(Cloud.self). __init__()
-        if color=='grey':
-            self.image=pygame.image.load('greyCloud.png').convert()
-        else:
-            slef.image=pygame.image.load('cloud.png').convert()
-            self.image.set_colorkey((0,0,0),RLEACCEL)
-            self.rect=self.image.get_rect(
-                center=(random.randint(820,900),random.randint(0,600))
-                )
-    def update(self):
-        self.rect.move_ip(-self.speed,0)
-        if self.rect.left<0:
-            self.kill()
-            
-class Rain(pygame.sprite.Sprite):
-    def __init__(self):
-        super(Rain,self).__init__()
-        self.image=pygame.image.load('raindrop.png').convert()
-        self.image.set_colorkey((0,0,0),RLEACCEL)
-        self.rect=self.iamge.get_rect(
-            cent=(random.randint(0,800),random.randin(-20.0))
-            )
-
-    
-    def update(self):
-        self.rect.move_ip(-self.speed,0)
-        if self.rect.bottom<900:
-            self.kill()
-    
-def set_level(level):
-    caption = 'Airplane - ' + ' Level ' + str(level)
-    pygame.display.set_caption(caption)
-
-
+ 
 
         
-
+#game initialization
 pygame.init()
+#display
 my_font=pygame.font.SysFont("helvetica",16)
 screen=pygame.display.set_mode((800,600))
 player = player()
-background=pygame.Surface(screen.get_size())
-background.fill((0,122,224))
+#background
+bg=pygame.image.load('sun.png')
+#background=pygame.Surface(screen.get_size())
+#background.fill((0,122,224))
 
 players=pygame.sprite.Group
 opponents=pygame.sprite.Group()
@@ -141,10 +111,10 @@ running = True
 
 clock=pygame.time.Clock()
 fps= 1000
-score = 10
+score = 0
 while running:
     clock.tick(fps)
-    scoretext=my_font.render(str(pygame.time.get_ticks()/100),1,(0,0,0))
+    scoretext=my_font.render(str(pygame.time.get_ticks()/2000),1,(0,0,0))
     for event in pygame.event.get():
         if event.type == KEYDOWN:
             if event.key == K_ESCAPE:
@@ -161,12 +131,15 @@ while running:
                 opponents.add(new_meteor)
                 all_sprites.add(new_meteor)
 
-    screen.blit(background,(0,0))
+    #screen.blit(background,(0,0))
+    screen.blit(bg,(0,0))
+
+    
     screen.blit(scoretext,(5,10))
     pressed_keys=pygame.key.get_pressed()
     player.update(pressed_keys)
     opponents.update()
-    #screen.blit(surf,(400,250))
+    # screen.blit(surf,(400,250))
     #screen.blit(player.surf,(400,250))
     #screen.blit(player.surf,player.rect)
     for entity in all_sprites: 
